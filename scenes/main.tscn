@@ -22,9 +22,9 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("2_sugp2")
 
-[node name="slotTroop1" parent="CanvasLayer/SlotTroopController" instance=ExtResource("1_o5qli")]
+[node name="slotTroop1" parent="CanvasLayer/SlotTroopController" node_paths=PackedStringArray("optional_label") instance=ExtResource("1_o5qli")]
 layout_mode = 0
-offset_left = 100.0
+offset_left = 600.0
 offset_top = 100.0
 offset_right = 100.0
 offset_bottom = 100.0
@@ -32,14 +32,33 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 element_size = 48
 gap = 4
+optional_label = NodePath("Label")
 
-[node name="SlotActionController" type="Control" parent="CanvasLayer/SlotTroopController/slotTroop1"]
+[node name="Label" type="Label" parent="CanvasLayer/SlotTroopController/slotTroop1"]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 103.0
+offset_bottom = 73.0
+text = "Lorem Ipsum"
+
+[node name="NextTurn" type="Button" parent="CanvasLayer"]
+offset_left = 300.0
+offset_top = 300.0
+offset_right = 386.0
+offset_bottom = 331.0
+text = "Next Turn"
+script = ExtResource("5_tbgi4")
+
+[node name="SlotActionController" type="Control" parent="CanvasLayer"]
+layout_mode = 3
 anchors_preset = 0
-offset_left = 50.0
-offset_right = 50.0
+offset_left = 150.0
+offset_top = 100.0
+offset_right = 150.0
+offset_bottom = 100.0
 script = ExtResource("4_jyhfs")
 
-[node name="slotAction1" parent="CanvasLayer/SlotTroopController/slotTroop1/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction1" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 0
 offset_left = 0.0
 offset_top = -50.0
@@ -48,7 +67,7 @@ offset_bottom = -50.0
 element_size = 48
 gap = 4
 
-[node name="slotAction2" parent="CanvasLayer/SlotTroopController/slotTroop1/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction2" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0
@@ -58,7 +77,7 @@ id = 1
 element_size = 48
 gap = 4
 
-[node name="slotAction3" parent="CanvasLayer/SlotTroopController/slotTroop1/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction3" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 0
 offset_left = 0.0
 offset_top = 50.0
@@ -67,11 +86,3 @@ offset_bottom = 50.0
 id = 2
 element_size = 48
 gap = 4
-
-[node name="NextTurn" type="Button" parent="CanvasLayer"]
-offset_left = 300.0
-offset_top = 300.0
-offset_right = 386.0
-offset_bottom = 331.0
-text = "Next Turn"
-script = ExtResource("5_tbgi4")

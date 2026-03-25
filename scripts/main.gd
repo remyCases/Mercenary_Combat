@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player_actions_node = $"CanvasLayer/SlotTroopController/slotTroop1/SlotActionController"
+@onready var player_actions_node = $"CanvasLayer/SlotActionController"
 var player = Combatant.new("player")
 var opponent = Combatant.new("opponent")
 

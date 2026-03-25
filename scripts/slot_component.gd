@@ -3,6 +3,7 @@ extends Control
 @export var id: int
 @export var element_size := 48
 @export var gap := 4
+@export var optional_label: Label = null
  
 var current_element: SelectableElement
 var dropdown_container: HBoxContainer
@@ -30,13 +31,6 @@ func _ready():
 	
 	slot_texture = TextureRect.new()
 	slot_button.add_child(slot_texture)
-	
-	if current_element.texture:
-		slot_texture.texture = current_element.texture
-	else:
-		slot_button.text = current_element.name
-
-	setCenter(slot_texture)
 
 	dropdown_container = HBoxContainer.new()
 	dropdown_container.add_theme_constant_override("separation", gap)
@@ -45,7 +39,7 @@ func _ready():
 	add_child(dropdown_container)
 	move_child(dropdown_container, 0)
 	
-	_update_dropdown()
+	_set_element(current_element)
 
 func _on_slot_clicked(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed:
@@ -89,6 +83,9 @@ func _set_element(element: SelectableElement):
 	else:
 		slot_texture.texture = null
 		slot_button.text = current_element.name
+	
+	if optional_label:
+		optional_label.text = current_element.name
 
 	dropdown_container.visible = false
 	_update_dropdown()

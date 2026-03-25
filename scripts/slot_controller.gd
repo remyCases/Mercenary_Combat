@@ -6,12 +6,9 @@ var troops: Array[SelectableElement]
 var empty_unit := SelectableElement.new("empty", load("res://images/redcross.png"))
 
 func _init() -> void:
-	troops.append(SelectableElement.new("A", load("res://images/MageLady.png")))
-	troops.append(SelectableElement.new("B", load("res://images/MageMan.png")))
-	troops.append(SelectableElement.new("C", load("res://images/PalLady.png")))
-	troops.append(SelectableElement.new("D", load("res://images/PalMan.png")))
-	troops.append(SelectableElement.new("E", load("res://images/RangerLady.png")))
-	troops.append(SelectableElement.new("F", load("res://images/RangerMan.png")))
+	troops.append(SelectableElement.new("wild_aggressor", load("res://images/MageLady.png")))
+	troops.append(SelectableElement.new("mind_player", load("res://images/MageMan.png")))
+	troops.append(SelectableElement.new("sharp_sentinel", load("res://images/PalLady.png")))
 
 	element_selected.connect(_on_element_selected)
 
