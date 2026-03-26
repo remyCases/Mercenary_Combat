@@ -11,78 +11,99 @@ script = ExtResource("1_tefeu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="SlotTroopController" type="Control" parent="CanvasLayer"]
-layout_mode = 3
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SlotActionController" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("4_jyhfs")
+
+[node name="slotAction1" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+element_size = 48
+gap = 4
+
+[node name="slotAction2" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 6
+id = 1
+element_size = 48
+gap = 4
+
+[node name="slotAction3" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+id = 2
+element_size = 48
+gap = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+z_index = -2
+z_as_relative = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Lorem Ipsum"
+autowrap_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NextTurn" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Next Turn"
+script = ExtResource("5_tbgi4")
+
+[node name="SlotTroopController" type="Control" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
 script = ExtResource("2_sugp2")
 
-[node name="slotTroop1" parent="CanvasLayer/SlotTroopController" node_paths=PackedStringArray("optional_label") instance=ExtResource("1_o5qli")]
-layout_mode = 0
-offset_left = 600.0
-offset_top = 100.0
-offset_right = 100.0
-offset_bottom = 100.0
+[node name="slotTroop1" parent="CanvasLayer/HBoxContainer/SlotTroopController" node_paths=PackedStringArray("optional_label") instance=ExtResource("1_o5qli")]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 element_size = 48
 gap = 4
 optional_label = NodePath("Label")
 
-[node name="Label" type="Label" parent="CanvasLayer/SlotTroopController/slotTroop1"]
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/SlotTroopController/slotTroop1"]
 layout_mode = 0
 offset_top = 50.0
 offset_right = 103.0
 offset_bottom = 73.0
 text = "Lorem Ipsum"
-
-[node name="NextTurn" type="Button" parent="CanvasLayer"]
-offset_left = 300.0
-offset_top = 300.0
-offset_right = 386.0
-offset_bottom = 331.0
-text = "Next Turn"
-script = ExtResource("5_tbgi4")
-
-[node name="SlotActionController" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 150.0
-offset_top = 100.0
-offset_right = 150.0
-offset_bottom = 100.0
-script = ExtResource("4_jyhfs")
-
-[node name="slotAction1" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = -50.0
-offset_right = 0.0
-offset_bottom = -50.0
-element_size = 48
-gap = 4
-
-[node name="slotAction2" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-id = 1
-element_size = 48
-gap = 4
-
-[node name="slotAction3" parent="CanvasLayer/SlotActionController" instance=ExtResource("1_o5qli")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 50.0
-offset_right = 0.0
-offset_bottom = 50.0
-id = 2
-element_size = 48
-gap = 4

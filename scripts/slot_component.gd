@@ -35,7 +35,8 @@ func _ready():
 	dropdown_container = HBoxContainer.new()
 	dropdown_container.add_theme_constant_override("separation", gap)
 	dropdown_container.anchor_top = 1.0
-	dropdown_container.offset_top = -element_size
+	dropdown_container.offset_top = - element_size
+	dropdown_container.z_index = 10
 	add_child(dropdown_container)
 	move_child(dropdown_container, 0)
 	

@@ -90,15 +90,15 @@ static func outcome_to_str(outcome: Outcome) -> String:
 		Outcome.Miss: return "Miss"
 	return ""
 
-static func outcome_to_desc(outcome: Outcome) -> String:
+static func outcome_to_des(outcome: Outcome) -> String:
 	match outcome:
-		Outcome.Hit: return " is badly wounded."
-		Outcome.Bruised: return " is bruised and shaken."
-		Outcome.Blocked: return " blocks."
-		Outcome.Parried: return " parries effectively."
-		Outcome.Fumbled: return " connects but was too weak to do anything."
-		Outcome.Dodged: return " dodges."
-		Outcome.Miss: return " misses."
+		Outcome.Hit: return "is hit by"
+		Outcome.Bruised: return "is bruised by"
+		Outcome.Blocked: return "blocks"
+		Outcome.Parried: return "parries"
+		Outcome.Fumbled: return "is fumbled by"
+		Outcome.Dodged: return "dodges"
+		Outcome.Miss: return "is missed by"
 	return ""
 
 static func get_worst_outcome(outcome: Outcome) -> Outcome:
@@ -188,13 +188,13 @@ static func get_contact_modifier(type: ActionType, stance: Stance) -> int:
 					return +2
 	return 0
 
-static func is_weapon_contact(outcome: Outcome) -> bool:
+static func is_damaging_health(outcome: Outcome) -> bool:
 	match outcome:
 		Outcome.Hit: return true
 		Outcome.Bruised: return true
-		Outcome.Blocked: return true
-		Outcome.Parried: return true
-		Outcome.Fumbled: return true
+		Outcome.Blocked: return false
+		Outcome.Parried: return false
+		Outcome.Fumbled: return false
 		Outcome.Dodged: return false
 		Outcome.Miss: return false
 	return false
@@ -212,7 +212,7 @@ static func is_contact(outcome: Outcome) -> bool:
 
 static func get_alertness_drain_for_attacker(outcome: Outcome, weight: ActionWeight) -> int:
 	if weight == ActionWeight.Heavy:
-		if is_weapon_contact(outcome):
+		if is_contact(outcome):
 			return 10
 		else:
 			return 15

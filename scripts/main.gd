@@ -1,10 +1,12 @@
 extends Node2D
 
-@onready var player_actions_node = $"CanvasLayer/SlotActionController"
+@onready var player_actions_node = $"CanvasLayer/HBoxContainer/SlotActionController"
+@onready var combat_log = $"CanvasLayer/HBoxContainer/VBoxContainer/ScrollContainer/Label"
 var player = Combatant.new("player")
 var opponent = Combatant.new("opponent")
 
 func resolve_turn() -> void:
+	combat_log.text = ""
 
 	var player_actions: Array[String] = player_actions_node.selected_actions
 	var opponent_actions: Array[String] = Globals.ACTION_DATABASE.keys().slice(0, 3)
@@ -14,6 +16,7 @@ func resolve_turn() -> void:
 		if player.is_dead() or opponent.is_dead():
 			break
 		resolve_action_slot(player_actions[slot], opponent_actions[slot], slot)
+		await get_tree().create_timer(1.0).timeout
 	
 	# Phase 2: Stamina recovery
 	player.stamina = 10
@@ -83,7 +86,7 @@ func resolve_action_slot(
 		acts_second_action = opponent_action
 		acts_first_init = player_init
 		acts_second_init = opponent_init
-		if player_init > 2*opponent_init:
+		if player_init > 4 + opponent_init:
 			pass_turn = true
 			acts_second.stance = Enums.Stance.Exposed
 			acts_second.is_force_exposed = true
@@ -94,7 +97,7 @@ func resolve_action_slot(
 		acts_second_action = player_action
 		acts_first_init = opponent_init
 		acts_second_init = player_init
-		if player_init > 2*opponent_init:
+		if player_init > 4 + opponent_init:
 			pass_turn = true
 			acts_second.stance = Enums.Stance.Exposed
 			acts_second.is_force_exposed = true
@@ -146,7 +149,7 @@ func resolve_action_slot(
 	action_log.second.summary.attacker_alertness =  acts_second.alertness
 	action_log.second.summary.defender_alertness =  acts_first.alertness
 
-	print(action_log.log_to_str())
+	combat_log.text += action_log.log_to_str()
 
 func resolve_action_execution(
 	action: Action,
@@ -217,10 +220,11 @@ func apply_outcome(
 	defender.alertness -= Enums.get_alertness_drain_for_defender(outcome, action.weight)
 
 	var contact = Enums.is_contact(outcome)
-	var hit = outcome == Enums.Outcome.Hit
+	var damaging = Enums.is_damaging_health(outcome)
 	if contact:
 		attacker.stamina -= action.stamina_cost_hit
-		defender.health_states = Enums.worsen_health_status(defender.health_states, hit)
+		if damaging:
+			defender.health_states = Enums.worsen_health_status(defender.health_states, outcome == Enums.Outcome.Hit)
 	else:
 		attacker.stamina -= action.stamina_cost_miss
 
