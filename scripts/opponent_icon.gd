@@ -1,3 +1,0 @@
-extends TextureRect
-
-class_name OpponentIcon

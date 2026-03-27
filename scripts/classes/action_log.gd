@@ -139,6 +139,23 @@ func combatantlog_to_str(actor: String) -> String:
 
 	return string_builder
 
+func stancelog_to_str(actor: String) -> String:
+
+	var string_builder = ""
+
+	if second.attacker_name == actor:
+		if second.summary.attacker_health == Enums.HealthStatus.Dead:
+			string_builder = "Dead\n"
+		else:
+			string_builder = Enums.stance_to_str(second.summary.attacker_stance)
+	elif second.defender_name == actor:
+		if second.summary.defender_health == Enums.HealthStatus.Dead:
+			string_builder += "Dead\n"
+		else:
+			string_builder = Enums.stance_to_str(second.summary.defender_stance)
+
+	return string_builder
+
 func debuglog_to_str() -> String:
 
 	var string_builder = ""

@@ -1,40 +1,34 @@
 extends Node
 
-var combat_log: CombatLog
-var player_log: PlayerLog
-var opponent_log: OpponentLog
+var combat_log: Label
 
-var opponent_icon: OpponentIcon
-var opponent_name: OpponentName
-var opponent_action_display: OpponentActionDisplay
+var player_log: Label
+var player_stance: Label
+
+var opponent_log: Label
+var opponent_icon: TextureRect
+var opponent_name: Label
+var opponent_action_display: Label
+var opponent_stance: Label
+
+func get_component(component_name: String) -> Node:
+	var node = get_tree().root.find_child(component_name, true, false)
+	if not node:
+		push_error("%s not found in scene tree" % component_name)
+	return node
 
 func ready() -> void:
-	combat_log = get_tree().root.find_child("CombatLog", true, false)
-	if not combat_log:
-		push_error("CombatLog not found in scene tree")
-	
-	player_log = get_tree().root.find_child("PlayerLog", true, false)
-	if not player_log:
-		push_error("PlayerLog not found in scene tree")
-	
-	opponent_log = get_tree().root.find_child("OpponentLog", true, false)
-	if not opponent_log:
-		push_error("OpponentLog not found in scene tree")	
-		
-	opponent_icon = get_tree().root.find_child("OpponentIcon", true, false)
-	if not opponent_icon:
-		push_error("OpponentIcon not found in scene tree")
-	opponent_icon.texture = Globals.OPPONENTS[Globals.opponent_id].icon
-		
-	opponent_name = get_tree().root.find_child("OpponentName", true, false)
-	if not opponent_name:
-		push_error("OpponentName not found in scene tree")
-	opponent_name.text = Globals.opponent_id
+	combat_log = get_component("CombatLog")
 
-	opponent_action_display = get_tree().root.find_child("OpponentActionDisplay", true, false)
-	if not opponent_action_display:
-		push_error("OpponentActionDisplay not found in scene tree")
-	
+	player_log = get_component("PlayerLog")
+	player_stance = get_component("PlayerStance")
+
+	opponent_log = get_component("OpponentLog")	
+	opponent_name = get_component("OpponentName")
+	opponent_icon = get_component("OpponentIcon")
+	opponent_action_display = get_component("OpponentActionDisplay")
+	opponent_stance = get_component("OpponentStance")
+
 	reset()
 
 func update_combat_log(str_log: String) -> void:
@@ -45,12 +39,36 @@ func error_combat_log() -> void:
 
 func update_player_log(str_log: String) -> void:
 	player_log.text = str_log
+
+func update_player_stance(str_log: String) -> void:
+	player_stance.text = str_log
 	
 func update_opponent_log(str_log: String) -> void:
 	opponent_log.text = str_log
 
+func predict_player_stance(actions: Array[String]) -> void:
+	if not player_stance:
+		return
+	player_stance.text = ""
+	for i in actions:
+		if i == "" or i == "empty":
+			return
+		player_stance.text += "%s -> " % i
+	
+func predict_opponent_log(str_log: String) -> void:
+	opponent_log.text = str_log
+
+func update_opponent_stance(str_log: String) -> void:
+	opponent_stance.text = str_log
+
 func reset() -> void:
 	combat_log.text = ""
+
 	player_log.text = ""
+	player_stance.text = ""
+
 	opponent_log.text = ""
+	opponent_name.text = Globals.opponent_id
+	opponent_icon.texture = Globals.OPPONENTS[Globals.opponent_id].icon
 	opponent_action_display.text = Globals.OPPONENTS[Globals.opponent_id].strategy[0]
+	opponent_stance.text = ""

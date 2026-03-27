@@ -14,6 +14,7 @@ func _init() -> void:
 
 func _on_element_selected(slot_node: Node, element: SelectableElement):
 	selected_actions[slot_node.id] = element.name
+	UIManager.predict_player_stance(selected_actions)
 
 func get_troops() -> Array[SelectableElement]:
 	var elements = actions.duplicate()

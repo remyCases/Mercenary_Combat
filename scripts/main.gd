@@ -145,6 +145,8 @@ func resolve_action_slot(
 	UIManager.update_combat_log(action_log.combatlog_to_str())
 	UIManager.update_player_log(action_log.combatantlog_to_str("player"))
 	UIManager.update_opponent_log(action_log.combatantlog_to_str("opponent"))
+	UIManager.update_player_stance(action_log.stancelog_to_str("player"))
+	UIManager.update_opponent_stance(action_log.stancelog_to_str("opponent"))
 
 func resolve_action_execution(
 	action: Action,
