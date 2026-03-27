@@ -1,17 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://tfb5n0biy384"]
+[gd_scene load_steps=12 format=3 uid="uid://tfb5n0biy384"]
 
 [ext_resource type="PackedScene" uid="uid://bg40ofhyuw6qv" path="res://scenes/slot_component.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://btgctrudn3jpq" path="res://scripts/main.gd" id="1_tefeu"]
-[ext_resource type="Script" uid="uid://g03nn5h7s2rd" path="res://scripts/slot_controller.gd" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://dyp2dadpw2v5i" path="res://scripts/slot_action_controller.gd" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://bk3pjowidpbem" path="res://scripts/combat_log.gd" id="4_o6xl0"]
+[ext_resource type="Script" uid="uid://ijr7081byw5r" path="res://scripts/player_log.gd" id="4_tipki"]
 [ext_resource type="Script" uid="uid://bt4iqfkwsfn5n" path="res://scripts/next_turn.gd" id="5_tbgi4"]
+[ext_resource type="StyleBox" uid="uid://b2v77nbmvedx0" path="res://button_style.tres" id="6_85g3d"]
+[ext_resource type="Script" uid="uid://b2rxkktamuwqn" path="res://scripts/opponent_log.gd" id="7_tipki"]
+[ext_resource type="Script" uid="uid://cwpoew6scavbm" path="res://scripts/opponent_icon.gd" id="8_choun"]
+[ext_resource type="Script" uid="uid://bv0ot57yh4yry" path="res://scripts/opponent_action_display.gd" id="8_ya4ey"]
+[ext_resource type="Script" uid="uid://dpawjmxwrtgvj" path="res://scripts/opponent_name.gd" id="9_ya4ey"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_tefeu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,21 +25,36 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="SlotActionController" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LeftContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SlotActionController" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 alignment = 1
 script = ExtResource("4_jyhfs")
 
-[node name="slotAction1" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction1" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 element_size = 48
 gap = 4
 
-[node name="slotAction2" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction2" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -41,7 +62,7 @@ id = 1
 element_size = 48
 gap = 4
 
-[node name="slotAction3" parent="CanvasLayer/HBoxContainer/SlotActionController" instance=ExtResource("1_o5qli")]
+[node name="slotAction3" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
@@ -49,61 +70,114 @@ id = 2
 element_size = 48
 gap = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="PlayerLog" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_styles/normal = ExtResource("6_85g3d")
+text = "Lorem Ipsum"
+autowrap_mode = 2
+script = ExtResource("4_tipki")
+
+[node name="MiddleContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/MiddleContainer"]
 z_index = -2
 z_as_relative = false
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 2
+mouse_behavior_recursive = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer/ScrollContainer"]
+[node name="CombatLog" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/MiddleContainer/ScrollContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
+mouse_behavior_recursive = 1
+theme_override_styles/normal = ExtResource("6_85g3d")
 text = "Lorem Ipsum"
 autowrap_mode = 2
+script = ExtResource("4_o6xl0")
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/MiddleContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="NextTurn" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer/CenterContainer"]
+[node name="NextTurn" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/MiddleContainer/CenterContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
+theme_override_styles/normal = ExtResource("6_85g3d")
 text = "Next Turn"
 script = ExtResource("5_tbgi4")
 
-[node name="SlotTroopController" type="Control" parent="CanvasLayer/HBoxContainer"]
+[node name="RightContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
-script = ExtResource("2_sugp2")
+size_flags_horizontal = 3
 
-[node name="slotTroop1" parent="CanvasLayer/HBoxContainer/SlotTroopController" node_paths=PackedStringArray("optional_label") instance=ExtResource("1_o5qli")]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_vertical = 2
+[node name="OpponentContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="ActionOpponentContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="OpponentActionDisplay" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer/ActionOpponentContainer"]
+layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
-element_size = 48
-gap = 4
-optional_label = NodePath("Label")
-
-[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/SlotTroopController/slotTroop1"]
-layout_mode = 0
-offset_top = 50.0
-offset_right = 103.0
-offset_bottom = 73.0
+size_flags_vertical = 10
+theme_override_styles/normal = ExtResource("6_85g3d")
 text = "Lorem Ipsum"
+script = ExtResource("8_ya4ey")
+
+[node name="action2" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer/ActionOpponentContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_styles/normal = ExtResource("6_85g3d")
+text = "?"
+
+[node name="action3" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer/ActionOpponentContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_styles/normal = ExtResource("6_85g3d")
+text = "?"
+
+[node name="DisplayOpponentContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OpponentIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer/DisplayOpponentContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+script = ExtResource("8_choun")
+
+[node name="OpponentName" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer/OpponentContainer/DisplayOpponentContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+text = "Lorem Ipsum"
+script = ExtResource("9_ya4ey")
+
+[node name="OpponentLog" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/RightContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_styles/normal = ExtResource("6_85g3d")
+text = "Lorem Ipsum"
+autowrap_mode = 2
+script = ExtResource("7_tipki")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://soksm75svunf"]
+
+[ext_resource type="Script" uid="uid://b3b1y107nbe7l" path="res://scripts/main_menu.gd" id="1_bqqt6"]
+[ext_resource type="Script" uid="uid://g03nn5h7s2rd" path="res://scripts/slot_controller.gd" id="1_ekxnf"]
+[ext_resource type="PackedScene" uid="uid://bg40ofhyuw6qv" path="res://scenes/slot_component.tscn" id="1_l6cm7"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bqqt6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+text = "Choose your opponent"
+
+[node name="SlotController" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1_ekxnf")
+
+[node name="SlotComponent" parent="VBoxContainer/SlotController" instance=ExtResource("1_l6cm7")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+element_size = 48
+gap = 4
+label = true
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+text = "Start Combat"

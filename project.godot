@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="MercCombat"
-run/main_scene="uid://tfb5n0biy384"
+run/main_scene="uid://soksm75svunf"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Globals="*res://scripts/classes/globals.gd"
+UIManager="*res://scripts/ui_manager.gd"
 
 [rendering]
 

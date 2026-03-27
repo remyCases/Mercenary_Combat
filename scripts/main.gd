@@ -1,15 +1,22 @@
 extends Node2D
 
-@onready var player_actions_node = $"CanvasLayer/HBoxContainer/SlotActionController"
-@onready var combat_log = $"CanvasLayer/HBoxContainer/VBoxContainer/ScrollContainer/Label"
+@onready var player_actions_node = $"CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController"
 var player = Combatant.new("player")
 var opponent = Combatant.new("opponent")
 
+func _ready() -> void:
+	UIManager.ready()
+
 func resolve_turn() -> void:
-	combat_log.text = ""
 
 	var player_actions: Array[String] = player_actions_node.selected_actions
-	var opponent_actions: Array[String] = Globals.ACTION_DATABASE.keys().slice(0, 3)
+	# validate actions
+	for slot in range(3):
+		if player_actions[slot] == "empty":
+			UIManager.error_combat_log()
+			return
+
+	var opponent_actions: Array[String] = Globals.OPPONENTS[Globals.opponent_id].strategy
 
 	# Phase 1: Resolve each action slot
 	for slot in range(3):
@@ -54,20 +61,6 @@ func resolve_action_slot(
 	
 	# Step 1: Calculate modified initiative
 	var pass_turn: bool = false
-	if not check_prerequisites(player_action, opponent, slot):
-		player.stamina -= 1
-		pass_turn = true
-		action_log.player_incorrect_choice = player_action.name
-	else:
-		action_log.player_incorrect_choice = ""
-	
-	if not check_prerequisites(opponent_action, player, slot):
-		# Opponent AI falls back to default action
-		action_log.opponent_incorrect_choice = opponent_action.name
-		opponent_action = Globals.ACTION_DATABASE["SLASH"]
-	else:
-		action_log.opponent_incorrect_choice = ""
-
 	var player_init = player_action.base_initiative + Enums.get_stance_modifier(player.stance) + get_emotional_modifier(player)
 	var opponent_init = opponent_action.base_initiative + Enums.get_stance_modifier(opponent.stance) + get_emotional_modifier(opponent)
 	
@@ -149,7 +142,9 @@ func resolve_action_slot(
 	action_log.second.summary.attacker_alertness =  acts_second.alertness
 	action_log.second.summary.defender_alertness =  acts_first.alertness
 
-	combat_log.text += action_log.log_to_str()
+	UIManager.update_combat_log(action_log.combatlog_to_str())
+	UIManager.update_player_log(action_log.combatantlog_to_str("player"))
+	UIManager.update_opponent_log(action_log.combatantlog_to_str("opponent"))
 
 func resolve_action_execution(
 	action: Action,
@@ -228,9 +223,6 @@ func apply_outcome(
 	else:
 		attacker.stamina -= action.stamina_cost_miss
 
-func check_prerequisites(player_action, opponent, slot) -> bool:
-	return true
-	
 func get_emotional_modifier(stance) -> int:
 	return 0
 

@@ -1,23 +1,24 @@
 extends Control
 
-signal element_selected(slot_node: Node, element_id: String)
+signal element_selected(slot_node: Node, element_id: SelectableElement)
 
+@onready var main_node: MainMenu = $"/root/Control"
 var troops: Array[SelectableElement]
 var empty_unit := SelectableElement.new("empty", load("res://images/redcross.png"))
 
 func _init() -> void:
-	troops.append(SelectableElement.new("wild_aggressor", load("res://images/MageLady.png")))
-	troops.append(SelectableElement.new("mind_player", load("res://images/MageMan.png")))
-	troops.append(SelectableElement.new("sharp_sentinel", load("res://images/PalLady.png")))
+	for i in Globals.OPPONENTS:
+		troops.append(SelectableElement.new(i, Globals.OPPONENTS[i].icon))
 
+func _ready() -> void:
 	element_selected.connect(_on_element_selected)
 
-func _on_element_selected(slot_node: Node, element: SelectableElement):
-	for slot in get_children():
-		if slot != slot_node \
-			and slot.current_element == element \
-			and slot.current_element != empty_unit:
-			slot._set_element(empty_unit)
+func _on_element_selected(_slot_node: Node, element: SelectableElement) -> void:
+	if element != empty_unit:
+		main_node.enable(element.name)
+	else:
+		main_node.disable()
+
 
 func get_troops() -> Array[SelectableElement]:
 	var elements = troops.duplicate()

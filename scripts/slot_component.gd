@@ -1,20 +1,20 @@
 extends Control
 
+class_name SlotComponent
+
 @export var id: int
 @export var element_size := 48
 @export var gap := 4
-@export var optional_label: Label = null
- 
+@export var label: bool = false
+
 var current_element: SelectableElement
 var dropdown_container: HBoxContainer
 var slot_button: Button
 var slot_texture: TextureRect
+var optional_label: Label
 
 static func setCenter(rect: TextureRect):
-	rect.anchor_left = 0.5
-	rect.anchor_right = 0.5
-	rect.anchor_top = 0.5
-	rect.anchor_bottom = 0.5
+	rect.set_anchors_preset(PRESET_CENTER)
 	var texture_size = rect.texture.get_size()
 	rect.offset_left = -texture_size.x / 2
 	rect.offset_right = texture_size.x / 2
@@ -23,28 +23,40 @@ static func setCenter(rect: TextureRect):
 
 func _ready():
 	current_element = get_parent().empty_unit
-	
-	slot_button = Button.new()
-	slot_button.custom_minimum_size = Vector2(element_size, element_size)
-	add_child(slot_button)
-	slot_button.gui_input.connect(_on_slot_clicked)
-	
-	slot_texture = TextureRect.new()
-	slot_button.add_child(slot_texture)
+	custom_minimum_size = Vector2(element_size, element_size)
+
+	var box_container = VBoxContainer.new()
+	box_container.set_anchors_preset(PRESET_TOP_LEFT)
+	box_container.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	add_child(box_container)
 
 	dropdown_container = HBoxContainer.new()
 	dropdown_container.add_theme_constant_override("separation", gap)
 	dropdown_container.anchor_top = 1.0
-	dropdown_container.offset_top = - element_size
-	dropdown_container.z_index = 10
+	dropdown_container.offset_top = - 2*element_size
+	dropdown_container.offset_bottom = - element_size
+	dropdown_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(dropdown_container)
-	move_child(dropdown_container, 0)
+
+	slot_button = Button.new()
+	slot_button.custom_minimum_size = Vector2(element_size, element_size)
+	slot_button.gui_input.connect(_on_slot_clicked)
+	slot_button.size_flags_horizontal = 0
+	slot_button.size_flags_vertical = 0
+	box_container.add_child(slot_button)
+
+	if label:
+		optional_label = Label.new()
+		box_container.add_child(optional_label)
 	
+	slot_texture = TextureRect.new()
+	slot_button.add_child(slot_texture)
+
 	_set_element(current_element)
 
 func _on_slot_clicked(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed:
-		dropdown_container.visible = !dropdown_container.visible 
+		dropdown_container.visible = !dropdown_container.visible
 
 func _update_dropdown():
 	for child in dropdown_container.get_children():
@@ -88,7 +100,5 @@ func _set_element(element: SelectableElement):
 	if optional_label:
 		optional_label.text = current_element.name
 
-	dropdown_container.visible = false
 	_update_dropdown()
-	
 	get_parent().element_selected.emit(self, element)

@@ -1,5 +1,25 @@
 extends Node
 
+var opponent_id: String = ""
+
+var OPPONENTS: Dictionary[String, Opponent] = {
+	"wild_aggressor": Opponent.new(
+		"wild_aggressor",
+		preload("res://images/MageLady.png"),
+		["CLEAVE", "SLASH", "SLASH"],
+	),
+	"mind_player": Opponent.new(
+		"mind_player",
+		preload("res://images/MageMan.png"),
+		["PROBE", "PROBE", "POKE"],
+	),
+	"sharp_sentinel": Opponent.new(
+		"sharp_sentinel",
+		preload("res://images/PalLady.png"),
+		["SLASH", "SLASH", "PROBE"],
+	),
+}
+
 var ACTION_DATABASE: Dictionary[String, Action] = {
 	# light action
 	"PROBE": Action.new(

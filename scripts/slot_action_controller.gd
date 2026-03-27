@@ -1,6 +1,6 @@
 extends Control
 
-signal element_selected(slot_node: Node, element_id: String)
+signal element_selected(slot_node: Node, element: SelectableElement)
 
 var actions: Array[SelectableElement]
 var empty_unit := SelectableElement.new("empty", load("res://images/redcross.png"))

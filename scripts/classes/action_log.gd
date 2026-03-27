@@ -80,10 +80,9 @@ func _init() -> void:
 	first = ExecutionLog.new()
 	second = ExecutionLog.new()
 
-func log_to_str() -> String:
+func combatlog_to_str() -> String:
 
 	var string_builder = ""
-	var debug_string_builder = ""
 
 	#execution_log.append(defender.name + "'s frustration breaks their composure!")
 	#execution_log.append(defender.name + " is terrified! They're barely standing.")
@@ -104,38 +103,46 @@ func log_to_str() -> String:
 
 	# Acting second
 	string_builder = second.execution_to_log(string_builder)
+	string_builder += "------\n"
 
-	# End states
-	string_builder += "\n"
-	if first.action == "DEAD":
-		string_builder += "{name}: Dead\n".format({
-			"name": second.defender_name,
-		})
-	else:
-		string_builder += "{name}: {alertness}, {health}, {stance}\n".format({
-			"name": second.defender_name,
-			"alertness": Enums.alertness_to_des(second.summary.defender_alertness),
-			"health": Enums.health_to_des(second.summary.defender_health),
-			"stance": Enums.stance_to_des(second.summary.defender_stance),
-		})
+	return string_builder
 
-	if second.action == "DEAD":
-		string_builder += "{name}: Dead\n".format({
-			"name": second.attacker_name,
-		})
-	else:
-		string_builder += "{name}: {alertness}, {health}, {stance}\n".format({
-			"name": second.attacker_name,
-			"alertness": Enums.alertness_to_des(second.summary.attacker_alertness),
-			"health": Enums.health_to_des(second.summary.attacker_health),
-			"stance": Enums.stance_to_des(second.summary.attacker_stance),
-		})
+
+func combatantlog_to_str(actor: String) -> String:
+
+	var string_builder = ""
+
+	if second.attacker_name == actor:
+		if second.summary.attacker_health == Enums.HealthStatus.Dead:
+			string_builder += "Dead\n"
+		else:
+			string_builder += "{alertness}, {health}, {stance}\n".format({
+				"alertness": Enums.alertness_to_des(second.summary.attacker_alertness),
+				"health": Enums.health_to_des(second.summary.attacker_health),
+				"stance": Enums.stance_to_des(second.summary.attacker_stance),
+			})
+	elif second.defender_name == actor:
+		if second.summary.defender_health == Enums.HealthStatus.Dead:
+			string_builder += "Dead\n"
+		else:
+			string_builder += "{alertness}, {health}, {stance}\n".format({
+				"name": second.defender_name,
+				"alertness": Enums.alertness_to_des(second.summary.defender_alertness),
+				"health": Enums.health_to_des(second.summary.defender_health),
+				"stance": Enums.stance_to_des(second.summary.defender_stance),
+			})
+	
 	#if first.emotional_states[Enums.EmotionType.Fear] > 0:
 	#	state_log.append("  [Frightened: " + str(player.emotional_states[Enums.EmotionType.Fear]) + "]")
 	#if player.emotional_states[Enums.EmotionType.Frustration] > 0:
 	#	state_log.append("  [Frustrated: " + str(player.emotional_states[Enums.EmotionType.Frustration]) + "]")
 
-	debug_string_builder += "[name  ]:\t{aname}\t{dname}\n[initia]\t{ainitiative}\t{dinitiative}\n[stamin]\t{astamina}\t{dstamina}\n[altert]\t{aalertness}\t{dalertness}\n[health]\t{ahealth}\t{dhealth}\n[stance]\t{astance}\t{dstance}\n".format({
+	return string_builder
+
+func debuglog_to_str() -> String:
+
+	var string_builder = ""
+	string_builder += "[name  ]:\t{aname}\t{dname}\n[initia]\t{ainitiative}\t{dinitiative}\n[stamin]\t{astamina}\t{dstamina}\n[altert]\t{aalertness}\t{dalertness}\n[health]\t{ahealth}\t{dhealth}\n[stance]\t{astance}\t{dstance}\n".format({
 		"aname": first.attacker_name.substr(0, 6),
 		"ainitiative": first.summary.attacker_init,
 		"astamina": first.summary.attacker_stamina,
@@ -149,7 +156,7 @@ func log_to_str() -> String:
 		"dhealth": first.summary.defender_health,
 		"dstance": first.summary.defender_stance,
 	})
-	debug_string_builder += "[name  ]:\t{aname}\t{dname}\n[initia]\t{ainitiative}\t{dinitiative}\n[stamin]\t{astamina}\t{dstamina}\n[altert]\t{aalertness}\t{dalertness}\n[health]\t{ahealth}\t{dhealth}\n[stance]\t{astance}\t{dstance}\n".format({
+	string_builder += "[name  ]:\t{aname}\t{dname}\n[initia]\t{ainitiative}\t{dinitiative}\n[stamin]\t{astamina}\t{dstamina}\n[altert]\t{aalertness}\t{dalertness}\n[health]\t{ahealth}\t{dhealth}\n[stance]\t{astance}\t{dstance}\n".format({
 		"aname": second.attacker_name.substr(0, 6),
 		"ainitiative": second.summary.attacker_init,
 		"astamina": second.summary.attacker_stamina,
@@ -163,7 +170,4 @@ func log_to_str() -> String:
 		"dhealth": second.summary.defender_health,
 		"dstance": second.summary.defender_stance,
 	})
-	
-	string_builder += "------\n"
-
 	return string_builder
