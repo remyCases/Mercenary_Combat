@@ -49,11 +49,11 @@ func update_opponent_log(str_log: String) -> void:
 func predict_player_stance(actions: Array[String]) -> void:
 	if not player_stance:
 		return
-	player_stance.text = ""
+	player_stance.text = "%s" % Enums.stance_to_str(Globals.GAME_STATE["player"].stance)
 	for i in actions:
 		if i == "" or i == "empty":
 			return
-		player_stance.text += "%s -> " % i
+		player_stance.text += " -> %s" % Enums.stance_to_str(Globals.ACTION_DATABASE[i].new_stance)
 	
 func predict_opponent_log(str_log: String) -> void:
 	opponent_log.text = str_log

@@ -1,8 +1,6 @@
 extends Node2D
 
 @onready var player_actions_node = $"CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController"
-var player = Combatant.new("player")
-var opponent = Combatant.new("opponent")
 
 func _ready() -> void:
 	UIManager.ready()
@@ -20,24 +18,24 @@ func resolve_turn() -> void:
 
 	# Phase 1: Resolve each action slot
 	for slot in range(3):
-		if player.is_dead() or opponent.is_dead():
+		if Globals.GAME_STATE["player"].is_dead() or Globals.GAME_STATE["opponent"].is_dead():
 			break
 		resolve_action_slot(player_actions[slot], opponent_actions[slot], slot)
 		await get_tree().create_timer(1.0).timeout
 	
 	# Phase 2: Stamina recovery
-	player.stamina = 10
-	opponent.stamina = 10
+	Globals.GAME_STATE["player"].stamina = 10
+	Globals.GAME_STATE["opponent"].stamina = 10
 
 	# Phase 3: Passive alertness recovery
-	player.alertness = min(100, player.alertness + 5)
-	opponent.alertness = min(100, opponent.alertness + 5)
+	Globals.GAME_STATE["player"].alertness = min(100, Globals.GAME_STATE["player"].alertness + 5)
+	Globals.GAME_STATE["opponent"].alertness = min(100, Globals.GAME_STATE["opponent"].alertness + 5)
 	
 	# Phase 4: Emotional state decay
-	player.emotional_states[Enums.EmotionType.Frustration] = max(0, player.emotional_states[Enums.EmotionType.Frustration] - 1)
-	player.emotional_states[Enums.EmotionType.Fear] = max(0, player.emotional_states[Enums.EmotionType.Fear] - 1)
-	opponent.emotional_states[Enums.EmotionType.Frustration] = max(0, opponent.emotional_states[Enums.EmotionType.Frustration] - 1)
-	opponent.emotional_states[Enums.EmotionType.Fear] = max(0, opponent.emotional_states[Enums.EmotionType.Fear] - 1)
+	Globals.GAME_STATE["player"].emotional_states[Enums.EmotionType.Frustration] = max(0, Globals.GAME_STATE["player"].emotional_states[Enums.EmotionType.Frustration] - 1)
+	Globals.GAME_STATE["player"].emotional_states[Enums.EmotionType.Fear] = max(0, Globals.GAME_STATE["player"].emotional_states[Enums.EmotionType.Fear] - 1)
+	Globals.GAME_STATE["opponent"].emotional_states[Enums.EmotionType.Frustration] = max(0, Globals.GAME_STATE["opponent"].emotional_states[Enums.EmotionType.Frustration] - 1)
+	Globals.GAME_STATE["opponent"].emotional_states[Enums.EmotionType.Fear] = max(0, Globals.GAME_STATE["opponent"].emotional_states[Enums.EmotionType.Fear] - 1)
 
 func resolve_action_slot(
 	player_action_name: String,
@@ -52,17 +50,17 @@ func resolve_action_slot(
 	var opponent_action: Action = Globals.ACTION_DATABASE[opponent_action_name]
 
 	# Step 0: Return into default stance if was forced to expose
-	if player.is_force_exposed:
-		player.is_force_exposed = false
-		player.stance = Enums.Stance.Guard
-	if opponent.is_force_exposed:
-		opponent.is_force_exposed = false
-		opponent.stance = Enums.Stance.Guard
+	if Globals.GAME_STATE["player"].is_force_exposed:
+		Globals.GAME_STATE["player"].is_force_exposed = false
+		Globals.GAME_STATE["player"].stance = Enums.Stance.Guard
+	if Globals.GAME_STATE["opponent"].is_force_exposed:
+		Globals.GAME_STATE["opponent"].is_force_exposed = false
+		Globals.GAME_STATE["opponent"].stance = Enums.Stance.Guard
 	
 	# Step 1: Calculate modified initiative
 	var pass_turn: bool = false
-	var player_init = player_action.base_initiative + Enums.get_stance_modifier(player.stance) + get_emotional_modifier(player)
-	var opponent_init = opponent_action.base_initiative + Enums.get_stance_modifier(opponent.stance) + get_emotional_modifier(opponent)
+	var player_init = player_action.base_initiative + Enums.get_stance_modifier(Globals.GAME_STATE["player"].stance) + get_emotional_modifier(Globals.GAME_STATE["player"])
+	var opponent_init = opponent_action.base_initiative + Enums.get_stance_modifier(Globals.GAME_STATE["opponent"].stance) + get_emotional_modifier(Globals.GAME_STATE["opponent"])
 	
 	# Step 2: Determine who acts first
 	var acts_first: Combatant
@@ -73,8 +71,8 @@ func resolve_action_slot(
 	var acts_second_init: int
 
 	if player_init >= opponent_init:
-		acts_first = player
-		acts_second = opponent
+		acts_first = Globals.GAME_STATE["player"]
+		acts_second = Globals.GAME_STATE["opponent"]
 		acts_first_action = player_action
 		acts_second_action = opponent_action
 		acts_first_init = player_init
@@ -84,8 +82,8 @@ func resolve_action_slot(
 			acts_second.stance = Enums.Stance.Exposed
 			acts_second.is_force_exposed = true
 	else:
-		acts_first = opponent
-		acts_second = player
+		acts_first = Globals.GAME_STATE["opponent"]
+		acts_second = Globals.GAME_STATE["player"]
 		acts_first_action = opponent_action
 		acts_second_action = player_action
 		acts_first_init = opponent_init

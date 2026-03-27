@@ -2,6 +2,11 @@ extends Node
 
 var opponent_id: String = ""
 
+var GAME_STATE: Dictionary[String, Combatant] = {
+	"player": Combatant.new("player"),
+	"opponent": Combatant.new("opponent"),
+}
+
 var OPPONENTS: Dictionary[String, Opponent] = {
 	"wild_aggressor": Opponent.new(
 		"wild_aggressor",
