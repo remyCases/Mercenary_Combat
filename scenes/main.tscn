@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bg40ofhyuw6qv" path="res://scenes/slot_component.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://btgctrudn3jpq" path="res://scripts/main.gd" id="1_tefeu"]
-[ext_resource type="Script" uid="uid://dyp2dadpw2v5i" path="res://scripts/slot_action_controller.gd" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://dyp2dadpw2v5i" path="res://scripts/UI/slot_action_controller.gd" id="2_tbgi4"]
 [ext_resource type="Script" uid="uid://bt4iqfkwsfn5n" path="res://scripts/next_turn.gd" id="5_tbgi4"]
 [ext_resource type="StyleBox" uid="uid://b2v77nbmvedx0" path="res://button_style.tres" id="6_85g3d"]
 
@@ -39,30 +39,24 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 alignment = 1
-script = ExtResource("4_jyhfs")
+script = ExtResource("2_tbgi4")
 
 [node name="slotAction1" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-element_size = 48
-gap = 4
 
 [node name="slotAction2" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 id = 1
-element_size = 48
-gap = 4
 
 [node name="slotAction3" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer/SlotActionController" instance=ExtResource("1_o5qli")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
 id = 2
-element_size = 48
-gap = 4
 
 [node name="PlayerStance" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/LeftContainer"]
 layout_mode = 2

@@ -47,6 +47,7 @@ func _ready():
 
 	if label:
 		optional_label = Label.new()
+		optional_label.set_anchors_preset(PRESET_CENTER)
 		box_container.add_child(optional_label)
 	
 	slot_texture = TextureRect.new()

@@ -18,7 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Globals="*res://scripts/classes/globals.gd"
-UIManager="*res://scripts/ui_manager.gd"
+UIManager="*res://scripts/UI/ui_manager.gd"
 
 [rendering]
 

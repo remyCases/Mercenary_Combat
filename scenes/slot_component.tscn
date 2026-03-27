@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bg40ofhyuw6qv"]
+[gd_scene load_steps=2 format=3 uid="uid://bg40ofhyuw6qv"]
 
-[ext_resource type="Script" uid="uid://duc1ekpdxjqrk" path="res://scripts/slot_component.gd" id="1_hmvne"]
-[ext_resource type="Texture2D" uid="uid://fbwidixdf7kl" path="res://images/redcross.png" id="2_d2a82"]
+[ext_resource type="Script" path="res://scripts/UI/slot_component.gd" id="1_hmvne"]
 
 [node name="SlotComponent" type="Control"]
 layout_mode = 3
@@ -11,6 +10,3 @@ offset_top = 112.0
 offset_right = 107.0
 offset_bottom = 152.0
 script = ExtResource("1_hmvne")
-element_size = null
-gap = null
-empty_slot_texture = ExtResource("2_d2a82")

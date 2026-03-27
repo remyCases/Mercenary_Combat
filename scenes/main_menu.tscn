@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://soksm75svunf"]
 
 [ext_resource type="Script" uid="uid://b3b1y107nbe7l" path="res://scripts/main_menu.gd" id="1_bqqt6"]
-[ext_resource type="Script" uid="uid://g03nn5h7s2rd" path="res://scripts/slot_controller.gd" id="1_ekxnf"]
 [ext_resource type="PackedScene" uid="uid://bg40ofhyuw6qv" path="res://scenes/slot_component.tscn" id="1_l6cm7"]
+[ext_resource type="Script" path="res://scripts/UI/slot_unit_controller.gd" id="2_bqqt6"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -30,7 +30,7 @@ text = "Choose your opponent"
 [node name="SlotController" type="Control" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-script = ExtResource("1_ekxnf")
+script = ExtResource("2_bqqt6")
 
 [node name="SlotComponent" parent="VBoxContainer/SlotController" instance=ExtResource("1_l6cm7")]
 layout_mode = 1
@@ -47,8 +47,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
-element_size = 48
-gap = 4
 label = true
 
 [node name="Button" type="Button" parent="VBoxContainer"]
